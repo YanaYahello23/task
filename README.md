@@ -16,3 +16,10 @@
 
 > npm run test
 > npm run format
+
+### run project from terminal
+* >navigate to the folder interview in terminal cd /path/to/folder/interview
+* >enter: ./start-project.sh
+* >or chmod +x start-project.sh and then ./start-project.sh
+
+
