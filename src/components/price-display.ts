@@ -7,6 +7,7 @@ class PriceDisplay extends HTMLElement {
       .price {
         font-size: 24px;
         font-weight: bold;
+        margin-bottom: 10px;
       }
     `;
     const div = document.createElement('div');
