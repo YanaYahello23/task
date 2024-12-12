@@ -51,7 +51,6 @@ class TariffCard extends HTMLElement {
       .benefits > li {
         margin-bottom: 5px;
       }
-      
       @media (min-width: 768px) {
        .speed-block-label {
         display: block;
