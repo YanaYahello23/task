@@ -1,3 +1,5 @@
+import { Tariff } from '../api-service/tariff-service';
+
 class TariffCard extends HTMLElement {
   constructor() {
     super();
@@ -43,6 +45,9 @@ class TariffCard extends HTMLElement {
         justify-content: flex-end;
         align-items: flex-end;
       }
+      .benefits {
+        display: none;
+      }
       @media (min-width: 768px) {
        .speed-block-label {
         display: block;
@@ -52,6 +57,11 @@ class TariffCard extends HTMLElement {
          align-items: flex-end;
          flex-basis: 180px;
        }
+     } 
+     @media (min-width: 900px) {
+       .benefits {
+        display: block;
+      }
      }    
     `;
 
@@ -64,10 +74,11 @@ class TariffCard extends HTMLElement {
       <h3 class="title"></h3>
       <div class="speed-block">
        <div class="speed-block-label">Download</div>
-      <speed-display value="" unit="" direction="down"></speed-display>
+      <speed-display value="" direction="down"></speed-display>
        <div  class="speed-block-label">Upload</div>
-      <speed-display value="" unit="" direction="up"></speed-display>
+      <speed-display value="" direction="up"></speed-display>
       </div>
+      <ul class="benefits"></ul>
       <div class="price-actions">
         <price-display price=""></price-display>
         <custom-button label="To Tariff >"></custom-button>
@@ -79,13 +90,7 @@ class TariffCard extends HTMLElement {
     shadow.appendChild(container);
   }
 
-  set data(tariffData: {
-    title: string;
-    downloadSpeed: string;
-    uploadSpeed: string;
-    price: string;
-    id: string;
-  }) {
+  set data(tariffData: Tariff) {
     const shadow = this.shadowRoot;
 
     const titleElement = shadow?.querySelector('.title');
@@ -99,11 +104,7 @@ class TariffCard extends HTMLElement {
     if (downloadSpeedElement) {
       downloadSpeedElement.setAttribute(
         'value',
-        tariffData.downloadSpeed.split(' ')[0]
-      );
-      downloadSpeedElement.setAttribute(
-        'unit',
-        tariffData.downloadSpeed.split(' ')[1]
+        String(tariffData.downloadSpeed)
       );
       downloadSpeedElement.setAttribute('direction', 'down');
     }
@@ -112,19 +113,25 @@ class TariffCard extends HTMLElement {
       'speed-display:last-of-type'
     );
     if (uploadSpeedElement) {
-      uploadSpeedElement.setAttribute(
-        'value',
-        tariffData.uploadSpeed.split(' ')[0]
-      );
-      uploadSpeedElement.setAttribute(
-        'unit',
-        tariffData.uploadSpeed.split(' ')[1]
-      );
+      uploadSpeedElement.setAttribute('value', String(tariffData.uploadSpeed));
       uploadSpeedElement.setAttribute('direction', 'up');
     }
 
     const priceElement = shadow?.querySelector('price-display');
-    if (priceElement) priceElement.setAttribute('price', tariffData.price);
+    if (priceElement)
+      priceElement.setAttribute('price', String(tariffData.price));
+
+    if (tariffData.benefits.length) {
+      const benefitsBlock = shadow?.querySelector('.benefits');
+      if (benefitsBlock) {
+        tariffData.benefits.forEach((benefit) => {
+          const li = document.createElement('li');
+          li.textContent = benefit;
+          benefitsBlock.appendChild(li);
+        });
+      }
+    }
   }
 }
+
 customElements.define('tariff-card', TariffCard);

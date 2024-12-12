@@ -46,6 +46,16 @@ export class CustomSelect extends HTMLElement {
     this.label.textContent = this.getAttribute('label') || 'Default Label';
 
     this.select = document.createElement('select');
+    this.select.addEventListener('change', () => {
+      const selectedValue = this.select.value;
+      this.dispatchEvent(
+        new CustomEvent('optionSelected', {
+          detail: { value: selectedValue },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    });
 
     container.appendChild(this.label);
     container.appendChild(this.select);
@@ -53,7 +63,7 @@ export class CustomSelect extends HTMLElement {
     this.shadow.appendChild(container);
   }
 
-  setOptions(options: OptionData[]) {
+  setOptions(options: OptionData[]): void {
     this.select.innerHTML = '';
     options.forEach((optionData) => {
       const option = document.createElement('option');
@@ -63,11 +73,15 @@ export class CustomSelect extends HTMLElement {
     });
   }
 
-  static get observedAttributes() {
+  static get observedAttributes(): string[] {
     return ['label', 'options'];
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  attributeChangedCallback(
+    name: string,
+    oldValue: string,
+    newValue: string
+  ): void {
     if (name === 'label' && this.label) {
       this.label.textContent = newValue;
     }
@@ -76,8 +90,18 @@ export class CustomSelect extends HTMLElement {
     }
   }
 
-  private updateOptions(options: CustomSelectAttributes[]) {
+  private updateOptions(
+    options: CustomSelectAttributes[],
+    placeholder: string = 'Select an option'
+  ): void {
     this.select.innerHTML = '';
+
+    const placeholderOption = document.createElement('option');
+    placeholderOption.value = '';
+    placeholderOption.textContent = placeholder;
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true;
+    this.select.appendChild(placeholderOption);
 
     options.forEach((optionData) => {
       const option = document.createElement('option');

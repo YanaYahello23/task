@@ -1,4 +1,18 @@
-### to run project:
+### Commands to install and run project:
 
-npm install
-npm run dev
+#### install node modules
+
+> npm install
+
+---
+
+#### run project
+
+> npm run dev
+
+---
+
+#### test and format
+
+> npm run test
+> npm run format

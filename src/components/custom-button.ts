@@ -11,11 +11,9 @@ class CustomButton extends HTMLElement {
           width: 100%;
       }
       button {
-        display: inline-flex;
+        display: flex;
         justify-content: center;
         padding: 7px;
-        font-size: 12px;
-        color: black;
         background-color: white;
         border: 1px solid orange;
         cursor: pointer;
@@ -32,17 +30,21 @@ class CustomButton extends HTMLElement {
     shadow.appendChild(this.button);
   }
 
-  static get observedAttributes() {
+  static get observedAttributes(): string[] {
     return ['label', 'disabled'];
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  attributeChangedCallback(
+    name: string,
+    oldValue: string,
+    newValue: string
+  ): void {
     if (name === 'label') {
       this.button.textContent = newValue;
     }
   }
 
-  onClick(handler: (event: Event) => void) {
+  onClick(handler: (event: Event) => void): void {
     this.button.addEventListener('click', handler);
   }
 }

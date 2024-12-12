@@ -37,7 +37,6 @@ class SpeedDisplay extends HTMLElement {
        flex: 1 1 0;
        text-align: center;
       }
-
       .direction, .block {
         display: flex; 
         justify-content: center; 
@@ -48,17 +47,17 @@ class SpeedDisplay extends HTMLElement {
         font-size: 25px;
         text-align: center;
        }
-      @media (min-width: 768px) {
+        @media (min-width: 768px) {
         .up, .down {
         width: 180px; 
         min-width: 180px;
         max-width: 180px;
-      }
-      .border-up {
-        border-right: 1px solid lightblue;
-      }
-      .border-down {
-        border-right: 1px solid lightgreen;
+        }
+       .border-up {
+         border-right: 1px solid lightblue;
+        }
+       .border-down {
+         border-right: 1px solid lightgreen;
       }
      }
     `;
@@ -68,18 +67,22 @@ class SpeedDisplay extends HTMLElement {
       <div class="direction block"></div>
       <div class="speed-data">
        <span class="speed-value">${this.getAttribute('value')}</span>
-       <span class="speed-unit">${this.getAttribute('unit')}</span>
+       <span class="speed-unit">Mbit/s</span>
       </div>
     `;
     shadow.appendChild(style);
     shadow.appendChild(div);
   }
 
-  static get observedAttributes() {
-    return ['direction', 'value', 'unit'];
+  static get observedAttributes(): string[] {
+    return ['direction', 'value'];
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  attributeChangedCallback(
+    name: string,
+    oldValue: string,
+    newValue: string
+  ): void {
     const shadow = this.shadowRoot;
     if (name === 'direction') {
       const directionElement: Element | null | undefined =
@@ -104,11 +107,7 @@ class SpeedDisplay extends HTMLElement {
         shadow?.querySelector('.speed-value');
       if (valueElement) valueElement.textContent = `${newValue || ''}`;
     }
-    if (name === 'unit') {
-      const unitElement: Element | null | undefined =
-        shadow?.querySelector('.speed-unit');
-      if (unitElement) unitElement.textContent = `${newValue || ''}`;
-    }
   }
 }
+
 customElements.define('speed-display', SpeedDisplay);

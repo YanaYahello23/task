@@ -16,11 +16,15 @@ class PriceDisplay extends HTMLElement {
     shadow.appendChild(div);
   }
 
-  static get observedAttributes() {
+  static get observedAttributes(): string[] {
     return ['price'];
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  attributeChangedCallback(
+    name: string,
+    oldValue: string,
+    newValue: string
+  ): void {
     const shadow = this.shadowRoot;
     if (name === 'price') {
       const priceElement = shadow?.querySelector('.price');
